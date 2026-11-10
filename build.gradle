@@ -19,6 +19,9 @@ allprojects {
         jcenter()
         google()
         mavenCentral()
+        maven {
+    url 'https://repository-cdn.liferay.com/nexus/content/repositories/gradle-plugins/'
+        }
     }
 }
 
