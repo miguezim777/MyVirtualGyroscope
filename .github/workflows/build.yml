@@ -1,0 +1,41 @@
+
+name: Compilar Giroscopio APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar projeto
+        uses: actions/checkout@v4
+
+      - name: Instalar Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '11'
+
+      - name: Preparar Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Instalar SDK 32
+        run: sdkmanager "platforms;android-32"
+
+      - name: Preparar Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '7.3.3'
+
+      - name: Gerar APK
+        run: gradle :app:assembleDebug --stacktrace
+
+      - name: Salvar APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: GiroscopioVirtual
+          path: app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+
+          
